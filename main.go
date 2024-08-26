@@ -9,11 +9,13 @@ import (
 	"golang.org/x/sys/windows"
 	"io"
 	"math"
+	"math/rand"
 	"mime/multipart"
 	"net/http"
 	"os"
 	"os/exec"
 	"regexp"
+	"strconv"
 	"strings"
 	"syscall"
 	"unsafe"
@@ -55,11 +57,23 @@ func getWindow(funcName string) uintptr {
 	return hwnd
 }
 
+var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-."
+
 func main() {
 	arg := os.Args[1]
 	if arg == "uuid" {
 		id := uuid.New()
 		fmt.Println(id.String())
+		return
+	}
+
+	if arg == "rand" {
+		amount, _ := strconv.ParseInt(os.Getenv("ESPANSO_CHARS"), 10, 64)
+		out := ""
+		for i := 0; i < int(amount); i++ {
+			out += string(chars[rand.Intn(len(chars))])
+		}
+		fmt.Println(out)
 		return
 	}
 
