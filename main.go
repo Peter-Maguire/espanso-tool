@@ -8,6 +8,7 @@ import (
 	"github.com/google/uuid"
 	"golang.org/x/sys/windows"
 	"io"
+	"math"
 	"mime/multipart"
 	"net/http"
 	"os"
@@ -71,7 +72,7 @@ func main() {
 				text = text[:lastDash]
 			}
 			text = re.ReplaceAllString(text, "")
-			fmt.Println(text[:32])
+			fmt.Println(text[:int(math.Min(32, float64(len(text))))])
 		}
 		return
 	}
