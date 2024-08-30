@@ -99,7 +99,7 @@ func main() {
 			return
 		}
 
-		fileName, err := CreateTempFile(data)
+		fileName, err := CreateTempFile(data, "Cobalt*.mp4")
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -130,10 +130,17 @@ func main() {
 		fmt.Println(out)
 		return
 	}
+
+	if arg == "frinkiac" {
+		url := os.Getenv("ESPANSO_CLIPBOARD")
+		fmt.Println(Frinkiac(url))
+		return
+	}
+
 }
 
-func CreateTempFile(input io.ReadCloser) (string, error) {
-	tempFile, err := os.CreateTemp(os.TempDir(), "Cobalt*.mp4")
+func CreateTempFile(input io.ReadCloser, name string) (string, error) {
+	tempFile, err := os.CreateTemp(os.TempDir(), name)
 	defer tempFile.Close()
 	defer input.Close()
 	if err != nil {
@@ -190,6 +197,14 @@ func DownloadCobaltFile(input string) (io.ReadCloser, error) {
 
 	streamUrl, ok := output["url"]
 	if !ok {
+		text, ok := output["text"]
+		if ok {
+			return nil, errors.New(text.(string))
+		}
+		cobaltError, ok := output["error"]
+		if ok {
+			return nil, errors.New(cobaltError.(string))
+		}
 		return nil, errors.New(output["error"].(string))
 	}
 
