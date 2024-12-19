@@ -8,12 +8,13 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"os"
 	"os/exec"
 	"strings"
 )
 
-func Frinkiac(query string) string {
-	result, err := SearchFrinkiac(query)
+func frinkiac() string {
+	result, err := SearchFrinkiac(os.Getenv("ESPANSO_CLIPBOARD"))
 	if err != nil {
 		return err.Error()
 	}
