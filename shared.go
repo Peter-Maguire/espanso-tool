@@ -47,6 +47,7 @@ func UploadFile(input io.ReadCloser) (string, error) {
 }
 
 func DownloadCobaltFile(input string) (io.ReadCloser, error) {
+	_, _ = http.NewRequest("GET", cobaltUrl, nil)
 	body := []byte(fmt.Sprintf(`{"url": "%s"}`, input))
 	req, err := http.NewRequest("POST", cobaltUrl, bytes.NewBuffer(body))
 	if err != nil {
