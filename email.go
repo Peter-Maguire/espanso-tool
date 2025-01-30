@@ -48,7 +48,7 @@ func getWindow(funcName string) uintptr {
 }
 
 func formatEmailName(text string) string {
-	re := regexp.MustCompile("[^a-z]|signup|register")
+	re := regexp.MustCompile("[^a-z]|signup|register|registration")
 	text = strings.ToLower(text)
 	lastDash := strings.LastIndex(text, "-")
 	if lastDash > -1 {
